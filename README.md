@@ -1,5 +1,6 @@
-# Brain-Diffuser
-Official repository for the paper ["**Brain-Diffuser: Natural scene reconstruction from fMRI signals using generative latent diffusion**"](https://arxiv.org/abs/2303.05334) by Furkan Ozcelik and Rufin VanRullen.
+# Brain-Diffuser-EEG
+Ihis work is an extension of Official repository for the paper ["**Brain-Diffuser: Natural scene reconstruction from fMRI signals using generative latent diffusion**"](https://arxiv.org/abs/2303.05334) by Furkan Ozcelik and Rufin VanRullen.
+In this work we want to replicate the above work for EEG signals. Basically EEG signals to Images
 
 ## Results
 The following are a few reconstructions obtained : 
@@ -12,20 +13,21 @@ The following are a few reconstructions obtained :
 
 ### Data Acquisition and Processing
 
-1. Download NSD data from NSD AWS Server:
+1. Download EEG Things Dataset from HuggingFace:
     ```
-	cd data
-	python download_nsddata.py
+	sudo apt install git-lfs
+	git lfs install
+    git clone https://huggingface.co/datasets/Haitao999/things-eeg
 	```
-2. Download "COCO_73k_annots_curated.npy" file from [HuggingFace NSD](https://huggingface.co/datasets/pscotti/naturalscenesdataset/tree/main)
-3. Prepare NSD data for the Reconstruction Task:
+
+2. Pull Large Data Files from HuggingFace
     ```
-	cd data
-	python prepare_nsddata.py -sub 1
-    python prepare_nsddata.py -sub 2
-    python prepare_nsddata.py -sub 5
-    python prepare_nsddata.py -sub 7
-	```
+    cd things-eeg
+	git lfs pull
+    ```
+    
+3. Download "COCO_73k_annots_curated.npy" file from [HuggingFace NSD](https://huggingface.co/datasets/pscotti/naturalscenesdataset/tree/main)
+
 
 ### First Stage Reconstruction with VDVAE
 
