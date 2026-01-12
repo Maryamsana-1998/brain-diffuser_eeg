@@ -102,6 +102,7 @@ class FolderImageDataset(Dataset):
     def __getitem__(self, idx: int) -> torch.Tensor:
         img = Image.open(self.paths[idx]).convert("RGB")
         img = self.to_tensor(img)  # float32, CHW, [0,1]
+        print('image shape', img.shape)
         return img
 
 
@@ -248,6 +249,7 @@ def compute_true_latents(
         # x is already CHW float in [0,1] from dataset
         # most vdvae preprocess expects BCHW and maybe returns (data_input, target)
         data_input, _target = preprocess_fn(x)
+        print('data shapes', data_input.shape)
 
         with torch.no_grad():
             activations = ema_vae.encoder.forward(data_input)

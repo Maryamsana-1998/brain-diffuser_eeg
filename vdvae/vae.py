@@ -80,7 +80,21 @@ class Encoder(HModule):
         self.enc_blocks = nn.ModuleList(enc_blocks)
 
     def forward(self, x):
-        x = x.permute(0, 3, 1, 2).contiguous()
+
+        if x.ndim != 4:
+            raise ValueError(f"Expected 4D tensor, got {x.shape}")
+        
+        # Already BCHW
+        if x.shape[1] == 3:
+            x = x.contiguous()
+        
+        # BHWC -> BCHW
+        elif x.shape[-1] == 3:
+            x = x.permute(0, 3, 1, 2).contiguous()
+        
+        else:
+            raise ValueError(f"Input must be BCHW or BHWC with 3 channels, got {x.shape}")
+        
         x = self.in_conv(x)
         activations = {}
         activations[x.shape[2]] = x
@@ -227,6 +241,7 @@ class VAE(HModule):
         self.decoder = Decoder(self.H)
 
     def forward(self, x, x_target):
+        print("inside vae" , x.shape)
         activations = self.encoder.forward(x)
         px_z, stats = self.decoder.forward(activations)
         distortion_per_pixel = self.decoder.out_net.nll(px_z, x_target)

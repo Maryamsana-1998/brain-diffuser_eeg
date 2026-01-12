@@ -38,9 +38,9 @@ python -c "import torch; print('cuda available:', torch.cuda.is_available(), 'co
 echo "running vdvae recons"
 
 python3 vdvae_recons_eeg.py \
-  --pred_latents_path brain-diffuser/data/predicted_features/eeg_10test.npy \
+  --pred_latents_path ../brain-diffuser/data/predicted_features/eeg_10test.npy \
   --compute_true_latents \
-  --image_root EEG_dataset/things-eeg/Image_set/test_images/ \
+  --image_root ../EEG_dataset/things-eeg/Image_set/test_images/ \
   --num_images 10 \
   --batch_size 10 \
   --out_dir results/vdvae_out
