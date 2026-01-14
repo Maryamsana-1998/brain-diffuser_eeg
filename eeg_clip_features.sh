@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --job-name=eegrecon
+#SBATCH --job-name=eegfeatures
 #SBATCH --ntasks=1
 #SBATCH --output=/home/sanama/brain-diffuser_eeg/logs/eegtest_%j.out
 #SBATCH --error=/home/sanama/brain-diffuser_eeg/logs/eegtest_%j.err
@@ -10,8 +10,6 @@
 #SBATCH --partition=normal_gpu
 #SBATCH --chdir=/home/sanama/brain-diffuser_eeg/
 
-# Make sure log dir exists
-mkdir -p /home/sanama/brain-diffuser_eeg/logs
 
 # Debugging output
 echo "==== Job started on $(hostname) at $(date) ===="
@@ -32,15 +30,10 @@ conda activate brain-diffuser
 echo "Activated Conda environment: $(which python)"
 python -c "import torch; print('cuda available:', torch.cuda.is_available(), 'count:', torch.cuda.device_count())"
 
-echo "Running VDVAE Extract Features eeg"
-python3 eeg_to_latents.py
+echo " Running eeg vision and text feature extraction"
 
-# echo "running vdvae recons"
+echo " TEXT EXTRACTION"
+python3 cliptext_features_eeg.py -sub 1 
 
-# python3 vdvae_recons_eeg.py \
-#   --pred_latents_path ../brain-diffuser/data/predicted_features/eeg_10test.npy \
-#   --compute_true_latents \
-#   --image_root ../EEG_dataset/things-eeg/Image_set/test_images/ \
-#   --num_images 10 \
-#   --batch_size 10 \
-#   --out_dir results/vdvae_out
+echo " VISION EXTRACTION"
+python3 clipvision_features_eeg.py -sub 1

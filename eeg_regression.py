@@ -31,7 +31,8 @@ def inspect_eeg_tensor(eeg: torch.Tensor, verbose: bool = True) -> np.ndarray:
     if verbose:
         print("EEG tensor shape:", tuple(eeg.shape))
         print("EEG dtype:", eeg.dtype)
-    eeg_np = eeg.detach().cpu().numpy()
+    # eeg_np = eeg.detach().cpu().numpy()
+    eeg_np = eeg
 
     # Global statistics (kept from your code)
     mean_per_trial = np.mean(eeg_np, axis=1)
@@ -70,6 +71,7 @@ def load_and_inspect_eeg(
         raise KeyError(f"'eeg' key not found in {path}. Available keys: {list(data.keys())}")
 
     eeg_np = inspect_eeg_tensor(data["eeg"], verbose=verbose)
+    # print("eeg np ", eeg_np)
 
     eeg_subset = eeg_np[:num_samples]
     if verbose:
